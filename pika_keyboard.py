@@ -5,15 +5,23 @@ open_canvas(Bg_frame_width, Bg_frame_height)
 background = load_image('images//pikachu_bg.png')
 character = load_image('images//sprite_sheet_1.png')
 
-left, right, up, down = False, False, False, False
+# 전역 변수 초기화
+left, right, up, down, shift = False, False, False, False, False
 
 running = True
-x, y = Bg_frame_width // 4 * 3 , 140
+x, y = Bg_frame_width // 4 * 3, 140  # 오른쪽 피카츄 초기 위치
 frame = 0
+fall_speed = 5  # 기본 하강 속도
+boosted_fall_speed = 20  # DOWN 키를 눌렀을 때 하강 속도
+up_speed = 10  # 기본 상승 속도
+boosted_up_speed = 20  # Shift + UP 키를 눌렀을 때 상승 속도
+
+# 왼쪽 피카츄 고정 위치
+left_pikachu_x, left_pikachu_y = Bg_frame_width // 4, 140
 
 def handle_events():
     global running
-    global left, right, up, down
+    global left, right, up, down, shift
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
@@ -23,19 +31,23 @@ def handle_events():
                 left = True
             elif event.key == SDLK_RIGHT:
                 right = True
-            #elif event.key == SDLK_UP:
-            #    up = True
-            #elif event.key == SDLK_DOWN:
-            #    down = True
+            elif event.key == SDLK_UP:
+                up = True
+            elif event.key == SDLK_DOWN:
+                down = True
+            elif event.key == SDLK_LSHIFT:  # Shift 키 입력 처리
+                shift = True
         elif event.type == SDL_KEYUP:
             if event.key == SDLK_LEFT:
                 left = False
             elif event.key == SDLK_RIGHT:
                 right = False
-            #elif event.key == SDLK_UP:
-            #    up = False
-            #elif event.key == SDLK_DOWN:
-            #    down = False
+            elif event.key == SDLK_UP:
+                up = False
+            elif event.key == SDLK_DOWN:
+                down = False
+            elif event.key == SDLK_LSHIFT:  # Shift 키 해제 처리
+                shift = False
 
 # 메인 루프
 while running:
@@ -43,26 +55,42 @@ while running:
     clear_canvas()
     background.draw(Bg_frame_width // 2, Bg_frame_height // 2)  # 배경 그리기
 
-    character.clip_composite_draw(frame * 67, 3 * 66, 67, 66, 0, 'h', x, y, 90, 90) #90,90 크기 조절
-    #character.clip_draw(frame * 68, 3 * 66, 68, 66, x, y) #왼족보는 애니메이션
-    # character.clip_draw(frame * 프레임의 x축 크기, 세로 갯수 -1 *프레임의 y축크기, 프레임의 x축 크기, 프레임의 y축크기, x, y)
-    if left:
+    # 왼쪽 피카츄 고정된 위치에서 오른쪽을 향하도록 출력
+    character.clip_composite_draw(frame * 67, 3 * 66, 67, 66, 0, '', left_pikachu_x, left_pikachu_y, 90, 90)
+
+    # 오른쪽 피카츄 이동 및 왼쪽을 향하도록 출력
+    if shift and up:  # Shift + UP 키 입력 처리
+        y += boosted_up_speed  # 빠르게 상승
+        character.clip_composite_draw(frame * 67, 2 * 66, 67, 66, 0, 'h', x, y, 90, 90)
+    elif up:  # UP 키 입력 처리 (위로 이동)
+        y += up_speed
+        character.clip_composite_draw(frame * 67, 3 * 66, 67, 66, 0, 'h', x, y, 90, 90)
+    elif down:  # DOWN 키 입력 처리 (빠르게 아래로 이동)
+        y -= boosted_fall_speed  # 빠르게 하강
+        character.clip_composite_draw(frame * 67, 3 * 66, 67, 66, 0, 'h', x, y, 90, 90)
+    elif left:  # LEFT 키 입력 처리
         x -= 10
-       # character.clip_composite_draw(frame * 68, 3 * 66, 68, 66, 0,'h',x, y,90,90)  # 왼쪽 이동 애니메이션
-    elif right:
+        character.clip_composite_draw(frame * 67, 3 * 66, 67, 66, 0, 'h', x, y, 90, 90)
+    elif right:  # RIGHT 키 입력 처리
         x += 10
-        #character.clip_composite_draw(frame * 68, 3 * 63, 68, 63, 0,'h', x, y,100,100)  # 오른쪽 이동 애니메이션
-    #else:
-        #character.clip_composite_draw(frame * 68, 3 * 66, 68, 66, 0,'h',x, y,90,90)  # 입력이 없을 때 기본 애니메이션
+        character.clip_composite_draw(frame * 67, 3 * 66, 67, 66, 0, 'h', x, y, 90, 90)
+    else:  # 입력이 없을 때 기본 애니메이션
+        y -= fall_speed  # 기본 하강 속도
+        character.clip_composite_draw(frame * 67, 3 * 66, 67, 66, 0, 'h', x, y, 90, 90)
+
+    # 화면 경계 조건 처리 (오른쪽 피카츄만 경계 처리)
+    if x > Bg_frame_width - 10:
+        x = Bg_frame_width - 10
+    elif x < Bg_frame_width // 2:
+        x = Bg_frame_width // 2
+
+    if y > Bg_frame_height - 10:  # 위쪽 경계 처리
+        y = Bg_frame_height - 10
+    elif y < 140:  # 아래쪽 경계 처리
+        y = 140
 
     update_canvas()
-    frame = (frame + 1) % 7  # 4개의 프레임 순환
-
-    if x > Bg_frame_width -10:
-        x = Bg_frame_width -10
-    elif x < Bg_frame_width //2:
-        x = Bg_frame_width //2
-
+    frame = (frame + 1) % 7  # 7개의 프레임 순환
     delay(0.05)
 
 close_canvas()
