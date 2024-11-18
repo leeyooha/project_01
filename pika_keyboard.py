@@ -58,8 +58,14 @@ while running:
     # 왼쪽 피카츄 고정된 위치에서 오른쪽을 향하도록 출력
     character.clip_composite_draw(frame * 67, 3 * 66, 67, 66, 0, '', left_pikachu_x, left_pikachu_y, 90, 90)
 
-    # 오른쪽 피카츄 이동 및 왼쪽을 향하도록 출력
-    if shift and up:  # Shift + UP 키 입력 처리
+    # 오른쪽 피카츄 이동 및 애니메이션 출력
+    if shift and left:  # Shift + LEFT 키 입력 처리
+        x -= 10
+        character.clip_composite_draw(frame * 67, 1 * 66, 67, 66, 0, 'h', x, y, 90, 90)
+    elif shift and right:  # Shift + RIGHT 키 입력 처리
+        x += 10
+        character.clip_composite_draw(frame * 67, 1 * 66, 67, 66, 0, '', x, y, 90, 90)
+    elif shift and up:  # Shift + UP 키 입력 처리
         y += boosted_up_speed  # 빠르게 상승
         character.clip_composite_draw(frame * 67, 2 * 66, 67, 66, 0, 'h', x, y, 90, 90)
     elif up:  # UP 키 입력 처리 (위로 이동)
@@ -73,7 +79,7 @@ while running:
         character.clip_composite_draw(frame * 67, 3 * 66, 67, 66, 0, 'h', x, y, 90, 90)
     elif right:  # RIGHT 키 입력 처리
         x += 10
-        character.clip_composite_draw(frame * 67, 3 * 66, 67, 66, 0, 'h', x, y, 90, 90)
+        character.clip_composite_draw(frame * 67, 3 * 66, 67, 66, 0, '', x, y, 90, 90)
     else:  # 입력이 없을 때 기본 애니메이션
         y -= fall_speed  # 기본 하강 속도
         character.clip_composite_draw(frame * 67, 3 * 66, 67, 66, 0, 'h', x, y, 90, 90)
@@ -90,7 +96,10 @@ while running:
         y = 140
 
     update_canvas()
-    frame = (frame + 1) % 7  # 7개의 프레임 순환
+    if shift and (left or right):  # Shift + 방향키를 누를 때 0~3 프레임 순환
+        frame = (frame + 1) % 4
+    else:  # 나머지 상태에서는 7개의 프레임 순환
+        frame = (frame + 1) % 7
     delay(0.05)
 
 close_canvas()
