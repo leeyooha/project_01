@@ -1,24 +1,42 @@
 from pico2d import *
 
+# 화면 크기 설정
 Bg_frame_width, Bg_frame_height = 1130, 700
 open_canvas(Bg_frame_width, Bg_frame_height)
-background = load_image('images//pikachu_bg.png')
-character = load_image('images//sprite_sheet_1.png')
+
+# 이미지 로드
+background = load_image('images//pikachu_bg.png')  # 배경 이미지
+character = load_image('images//sprite_sheet_1.png')  # 피카츄 이미지
+monster_ball_image = load_image('images//ball_sprite_sheet.png')  # 몬스터볼 이미지
 
 # 전역 변수 초기화
 left, right, up, down, shift = False, False, False, False, False
-
 running = True
-x, y = Bg_frame_width // 4 * 3, 140  # 오른쪽 피카츄 초기 위치
+
+# 오른쪽 피카츄 초기 위치
+x, y = Bg_frame_width // 4 * 3, 140
 frame = 0
-fall_speed = 5  # 기본 하강 속도
-boosted_fall_speed = 20  # DOWN 키를 눌렀을 때 하강 속도
-up_speed = 10  # 기본 상승 속도
-boosted_up_speed = 20  # Shift + UP 키를 눌렀을 때 상승 속도
+
+# 몬스터볼 초기 위치 및 속도
+ball_x, ball_y = 500, 350
+ball_speed_x, ball_speed_y = 3, -2
+ball_frame = 0
+
+# 몬스터볼 프레임 크기와 간격
+BALL_FRAME_WIDTH = 62  # 공 프레임 너비
+BALL_FRAME_HEIGHT = 62  # 공 프레임 높이
+BALL_FRAME_SPACING = 2  # 프레임 간 간격
+
+# 피카츄 움직임 속도
+fall_speed = 5
+boosted_fall_speed = 20
+up_speed = 10
+boosted_up_speed = 20
 
 # 왼쪽 피카츄 고정 위치
 left_pikachu_x, left_pikachu_y = Bg_frame_width // 4, 140
 
+# 이벤트 처리 함수
 def handle_events():
     global running
     global left, right, up, down, shift
@@ -35,7 +53,7 @@ def handle_events():
                 up = True
             elif event.key == SDLK_DOWN:
                 down = True
-            elif event.key == SDLK_LSHIFT:  # Shift 키 입력 처리
+            elif event.key == SDLK_LSHIFT:
                 shift = True
         elif event.type == SDL_KEYUP:
             if event.key == SDLK_LEFT:
@@ -46,60 +64,79 @@ def handle_events():
                 up = False
             elif event.key == SDLK_DOWN:
                 down = False
-            elif event.key == SDLK_LSHIFT:  # Shift 키 해제 처리
+            elif event.key == SDLK_LSHIFT:
                 shift = False
 
 # 메인 루프
 while running:
-    handle_events()  # 이벤트 처리
-    clear_canvas()
-    background.draw(Bg_frame_width // 2, Bg_frame_height // 2)  # 배경 그리기
+    handle_events()
 
-    # 왼쪽 피카츄 고정된 위치에서 오른쪽을 향하도록 출력
-    character.clip_composite_draw(frame * 67, 3 * 66, 67, 66, 0, '', left_pikachu_x, left_pikachu_y, 90, 90)
+    # 몬스터볼 업데이트
+    ball_x += ball_speed_x
+    ball_y += ball_speed_y
+    ball_speed_y -= 0.1  # 중력 효과
+    if ball_x <= 50 or ball_x >= Bg_frame_width - 50:  # 좌우 경계 충돌
+        ball_speed_x = -ball_speed_x
+    if ball_y <= 140:  # 바닥 충돌
+        ball_speed_y = -ball_speed_y * 0.8
+    ball_frame = (ball_frame + 1) % 8  # 애니메이션 프레임 업데이트
 
-    # 오른쪽 피카츄 이동 및 애니메이션 출력
-    if shift and left:  # Shift + LEFT 키 입력 처리
+    # 오른쪽 피카츄 이동
+    if shift and left:
         x -= 10
-        character.clip_composite_draw(frame * 67, 1 * 66, 67, 66, 0, 'h', x, y, 90, 90)
-    elif shift and right:  # Shift + RIGHT 키 입력 처리
+    elif shift and right:
         x += 10
-        character.clip_composite_draw(frame * 67, 1 * 66, 67, 66, 0, '', x, y, 90, 90)
-    elif shift and up:  # Shift + UP 키 입력 처리
-        y += boosted_up_speed  # 빠르게 상승
-        character.clip_composite_draw(frame * 67, 2 * 66, 67, 66, 0, 'h', x, y, 90, 90)
-    elif up:  # UP 키 입력 처리 (위로 이동)
+    elif shift and up:
+        y += boosted_up_speed
+    elif up:
         y += up_speed
-        character.clip_composite_draw(frame * 67, 3 * 66, 67, 66, 0, 'h', x, y, 90, 90)
-    elif down:  # DOWN 키 입력 처리 (빠르게 아래로 이동)
-        y -= boosted_fall_speed  # 빠르게 하강
-        character.clip_composite_draw(frame * 67, 3 * 66, 67, 66, 0, 'h', x, y, 90, 90)
-    elif left:  # LEFT 키 입력 처리
+    elif down:
+        y -= boosted_fall_speed
+    elif left:
         x -= 10
-        character.clip_composite_draw(frame * 67, 3 * 66, 67, 66, 0, 'h', x, y, 90, 90)
-    elif right:  # RIGHT 키 입력 처리
+    elif right:
         x += 10
-        character.clip_composite_draw(frame * 67, 3 * 66, 67, 66, 0, '', x, y, 90, 90)
-    else:  # 입력이 없을 때 기본 애니메이션
-        y -= fall_speed  # 기본 하강 속도
-        character.clip_composite_draw(frame * 67, 3 * 66, 67, 66, 0, 'h', x, y, 90, 90)
+    else:
+        y -= fall_speed  # 기본 하강
 
-    # 화면 경계 조건 처리 (오른쪽 피카츄만 경계 처리)
+    # 화면 경계 처리
     if x > Bg_frame_width - 10:
         x = Bg_frame_width - 10
     elif x < Bg_frame_width // 2:
         x = Bg_frame_width // 2
-
-    if y > Bg_frame_height - 10:  # 위쪽 경계 처리
+    if y > Bg_frame_height - 10:
         y = Bg_frame_height - 10
-    elif y < 140:  # 아래쪽 경계 처리
+    elif y < 140:
         y = 140
 
+    # 화면 그리기
+    clear_canvas()
+    background.draw(Bg_frame_width // 2, Bg_frame_height // 2)  # 배경 그리기
+
+    # 왼쪽 피카츄 그리기
+    character.clip_composite_draw(frame * 67, 3 * 66, 67, 66, 0, '', left_pikachu_x, left_pikachu_y, 90, 90)
+
+    # 오른쪽 피카츄 그리기
+    character.clip_composite_draw(frame * 67, 3 * 66, 67, 66, 0, 'h', x, y, 90, 90)
+
+    # 몬스터볼 그리기
+    monster_ball_image.clip_draw(
+        ball_frame * (BALL_FRAME_WIDTH + BALL_FRAME_SPACING),
+        0,
+        BALL_FRAME_WIDTH,
+        BALL_FRAME_HEIGHT,
+        ball_x,
+        ball_y
+    )
+
     update_canvas()
-    if shift and (left or right):  # Shift + 방향키를 누를 때 0~3 프레임 순환
+
+    # 애니메이션 프레임 업데이트
+    if shift and (left or right):
         frame = (frame + 1) % 4
-    else:  # 나머지 상태에서는 7개의 프레임 순환
+    else:
         frame = (frame + 1) % 7
+
     delay(0.05)
 
 close_canvas()
