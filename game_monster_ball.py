@@ -28,7 +28,16 @@ class MonsterBall:
         self.game = 0
         # 리소스 경로에 맞춰 수정
         self.crashing_sound = load_wav(RESOURCE_PATH + 'WAVE146_1.wav')
-        self.crashing_sound.set_volume(16)
+        self.crashing_sound.set_volume(20)
+
+    def reset_position(self, winner_x):
+        """승리한 플레이어 위치에 따라 몬스터볼 초기화"""
+        self.x = winner_x
+        self.y = 580
+        self.speed_x = 0
+        self.speed_y = -1
+        self.hit_x = None
+        self.game = 0
 
     def update(self):
         # 애니메이션 처리
@@ -92,24 +101,5 @@ class MonsterBall:
                 self.speed_x = -self.speed_x
 
 
-def handle_score_update():
-    global game_monster_ball
 
-    if game_monster_ball.x <= 500:
-        server.score_2.count += 1
-        server.winner = '2p'
-    else:
-        server.score_1.count += 1
-        server.winner = '1p'
 
-    # 점수가 10점을 넘지 않으면 게임을 계속 진행
-    if server.score_2.count <= 9 and server.score_1.count <= 9:
-        for _ in range(100):
-            game_monster_ball.update()
-            draw()
-            delay(0.01)
-        game_monster_ball = MonsterBall(500,580)  # 공을 다시 시작 위치로 리셋
-        pikachu_world.add_object(game_monster_ball, 2)  # 새로운 공을 다시 추가
-    else:
-        # 10점 이상이 되면 게임 오버로 전환
-        game_framework.change_mode(game_over)
