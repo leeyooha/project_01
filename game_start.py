@@ -8,7 +8,7 @@ import title_mode
 RESOURCE_PATH = "C:\\2DGP_proj\\project_01\\resource\\"
 
 
-def init():
+def init_game_logic():
     global game_monster_ball, pika1, pika2
 
     # 공 초기화
