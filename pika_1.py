@@ -91,7 +91,7 @@ class Jump_right:
     def enter(pikachu, e):
         if up_down(e):
             pikachu.jump_sound.play()
-            pikachu.speed_y = 5
+            pikachu.speed_y = 6
         pikachu.speed_x = 1
         pikachu.action = 2
         pass
