@@ -91,28 +91,29 @@ def update():
 def handle_score_update():
     global game_monster_ball, pika1, pika2
 
-    # 점수 업데이트
-    if game_monster_ball.x <= 500:  # 1P 득점
-        server.score_1.count += 1
-        server.winner = '1p'
-        loser_x, loser_y = pika2.x, pika2.y  # 패자는 2P
-    else:  # 2P 득점
-        server.score_2.count += 1
+    # 득점 판별
+    if game_monster_ball.x <= 500:  # 공이 왼쪽 바닥(1P 영역)에 닿았을 때
+        server.score_2.count += 1  # 2P 득점
         server.winner = '2p'
         loser_x, loser_y = pika1.x, pika1.y  # 패자는 1P
+    else:  # 공이 오른쪽 바닥(2P 영역)에 닿았을 때
+        server.score_1.count += 1  # 1P 득점
+        server.winner = '1p'
+        loser_x, loser_y = pika2.x, pika2.y  # 패자는 2P
 
     # 공 위치를 패자 머리 위로 배치
     game_monster_ball.x = loser_x  # 패자의 x 위치
-    game_monster_ball.y = loser_y + 100  # 머리 위에 배치
+    game_monster_ball.y = loser_y + 100  # 패자 머리 위에 배치
     game_monster_ball.speed_x = 0  # 수평 이동 없음
     game_monster_ball.speed_y = -5  # 아래로 떨어지는 속도
 
-    # 점수 업데이트 후 초기화 또는 종료
+    # 점수 조건 확인
     if server.score_1.count >= 10 or server.score_2.count >= 10:
-        game_framework.change_mode(game_over)  # 게임 종료
+        print("Game Over Triggered")
+        game_framework.stack.change_mode(game_over)  # 게임 종료
     else:
-        game_framework.change_mode(game_start)  # 게임 시작 상태로 초기화
-
+        print("Resetting Game Start")
+        game_framework.stack.change_mode(game_start)  # 게임 초기화
 
 
 def draw():
@@ -133,3 +134,4 @@ def finish():
     #global pika1, pika2, game_monster_ball
     #del pika1, pika2, game_monster_ball
     pikachu_world.clear()
+

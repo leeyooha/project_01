@@ -60,7 +60,11 @@ stack = ModeStack()
 def run(start_mode):
     stack.run(start_mode)
 
-def change_mode(next_mode):
-    global current_mode
-    current_mode = next_mode
-    current_mode.init()  # 새로운 모드 초기화 함수 호출
+# game_framework.py
+def change_mode(self, mode):
+    if self.stack:  # 현재 모드가 존재하면
+        self.stack[-1].finish()  # 현재 모드 종료
+        self.stack.pop()  # 스택에서 제거
+    self.stack.append(mode)  # 새 모드 추가
+    mode.init()  # 새 모드 초기화
+

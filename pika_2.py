@@ -288,11 +288,11 @@ class Pika2:
         self.state_machine.start()
         self.move = 0
         self.jump_sound = load_wav(RESOURCE_PATH + 'WAVE141_1.wav')
-        self.jump_sound.set_volume(32)
+        self.jump_sound.set_volume(30)
         self.landing_sound = load_wav(RESOURCE_PATH + 'WAVE142_1.wav')
-        self.landing_sound.set_volume(32)
+        self.landing_sound.set_volume(30)
         self.pikachu_sound = load_wav(RESOURCE_PATH + 'WAVE144_1.wav')
-        self.pikachu_sound.set_volume(32)
+        self.pikachu_sound.set_volume(30)
 
     def update(self):
         self.state_machine.update()

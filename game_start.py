@@ -63,8 +63,8 @@ def update():
     """업데이트 함수"""
     global scale_factor
     scale_factor += 0.005
-    # 2초 후 플레이 모드로 전환
-    if get_time() - logo_start_time >= 3.0:
+    # 1.5초 후 플레이 모드로 전환
+    if get_time() - logo_start_time >= 1.5:
         game_framework.stack.change_mode(play_mode)
 
 

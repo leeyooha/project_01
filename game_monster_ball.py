@@ -28,7 +28,7 @@ class MonsterBall:
         self.game = 0
         # 리소스 경로에 맞춰 수정
         self.crashing_sound = load_wav(RESOURCE_PATH + 'WAVE146_1.wav')
-        self.crashing_sound.set_volume(20)
+        self.crashing_sound.set_volume(35)
 
     def reset_position(self, winner_x):
         """승리한 플레이어 위치에 따라 몬스터볼 초기화"""
@@ -99,6 +99,8 @@ class MonsterBall:
                 self.speed_y = -self.speed_y
             else:  # 네트 상단에 부딪히면 수평 반사 처리
                 self.speed_x = -self.speed_x
+
+                pass
 
 
 

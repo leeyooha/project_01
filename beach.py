@@ -3,7 +3,7 @@ class Beach:
     def __init__(self):
         self.image = load_image('resource\\beach.png')
         self.bgm = load_music('resource\\bgm.mp3')
-        self.bgm.set_volume(16)
+        self.bgm.set_volume(25)
         self.bgm.repeat_play()
 
     def update(self):
