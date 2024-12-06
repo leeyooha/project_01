@@ -239,6 +239,7 @@ class Idle:
         pass
 
 
+
 class StateMachine:
     def __init__(self, pikachu):
         self.pikachu = pikachu
