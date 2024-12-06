@@ -4,7 +4,7 @@ import game_framework
 import title_mode
 
 # 리소스 경로 상수
-RESOURCE_PATH = "C:\\2DGP_proj\\project_01\\resource\\"
+#RESOURCE_PATH = "C:\\2DGP_proj\\project_01\\resource\\"
 
 def handle_events():
     """이벤트 처리"""
@@ -21,7 +21,7 @@ def handle_events():
 def init():
     """초기화 함수"""
     global logo_start_time, logo_image
-    logo_image = load_image(RESOURCE_PATH + 'tuk_credit.png')
+    logo_image = load_image('resource\\tuk_credit.png')
     logo_start_time = get_time()
 
 

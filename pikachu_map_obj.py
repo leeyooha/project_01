@@ -3,11 +3,11 @@ import random
 from pikachu_world import remove_object
 
 # 리소스 경로 상수
-RESOURCE_PATH = "C:\\2DGP_proj\\project_01\\resource\\"
+#RESOURCE_PATH = "C:\\2DGP_proj\\project_01\\resource\\"
 
 class Net:
     def __init__(self):
-        self.image = load_image(RESOURCE_PATH + 'net.png')
+        self.image = load_image('resource\\net.png')
 
     def update(self):
         pass
@@ -25,7 +25,7 @@ class Net:
 
 class Wave:
     def __init__(self):
-        self.image = load_image(RESOURCE_PATH + 'wave.png')
+        self.image = load_image('resource\\wave.png')
         self.y = 0
         self.dir = 1
 
@@ -42,7 +42,7 @@ class Wave:
 
 class Cloud:
     def __init__(self, x, y):
-        self.image = load_image(RESOURCE_PATH + 'cloud.png')
+        self.image = load_image('resource\\cloud.png')
         self.x = x
         self.y = y
         self.speed = random.randint(1, 5)
@@ -60,7 +60,7 @@ class Cloud:
 
 class Score:
     def __init__(self, x, y, count):
-        self.image = load_image(RESOURCE_PATH + 'score.png')
+        self.image = load_image('resource\\score.png')
         self.x = x
         self.y = y
         self.count = count
@@ -74,7 +74,7 @@ class Score:
 
 class GameOverPikachu:
     def __init__(self, x, action):
-        self.image = load_image(RESOURCE_PATH + 'game_over_pikachu.png')
+        self.image = load_image('resource\\game_over_pikachu.png')
         self.x = x
         self.y = 150
         self.frame = 0

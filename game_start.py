@@ -5,7 +5,7 @@ import play_mode
 import title_mode
 
 # 리소스 경로 상수
-RESOURCE_PATH = "C:\\2DGP_proj\\project_01\\resource\\"
+#RESOURCE_PATH = "C:\\2DGP_proj\\project_01\\resource\\"
 
 
 def init_game_logic():
@@ -46,9 +46,9 @@ def init():
     global background_image, game_start_image, ready_image
 
     # 리소스 로드
-    background_image = load_image(RESOURCE_PATH + 'game_start_map.png')
-    game_start_image = load_image(RESOURCE_PATH + 'start.png')
-    ready_image = load_image(RESOURCE_PATH + 'ready.png')
+    background_image = load_image('resource\\game_start_map.png')
+    game_start_image = load_image('resource\\start.png')
+    ready_image = load_image('resource\\ready.png')
 
     logo_start_time = get_time()
     scale_factor = 1

@@ -13,7 +13,7 @@ class Game_over_pikachu:
         self.y = 220  # Pikachu의 중심 y 좌표 (조정)
         self.frame = 4  # 현재 프레임
         self.winner_flag = winner_flag  # 승자 여부 (1 = 승자, 0 = 패자)
-        self.image = load_image('C:\\2DGP_proj\\project_01\\resource\\game_over_pikachu.png')
+        self.image = load_image('resource\\game_over_pikachu.png')
         self.frame_width = 100  # 프레임의 너비
         self.frame_height = 100  # 프레임의 높이
         self.frame_time = 0  # 프레임 전환 속도 조정용 시간 변수
@@ -73,8 +73,8 @@ def init():
     pikachu_world.add_objects(clouds, 1)
 
     # 리소스 로드
-    image = load_image('C:\\2DGP_proj\\project_01\\resource\\continue.png')
-    p_pikachu_sound = load_wav('C:\\2DGP_proj\\project_01\\resource\\WAVE143_1.wav')
+    image = load_image('resource\\continue.png')
+    p_pikachu_sound = load_wav('resource\\WAVE143_1.wav')
     p_pikachu_sound.set_volume(32)
 
 # 종료 함수

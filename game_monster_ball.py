@@ -4,7 +4,7 @@ import game_framework
 import play_mode
 
 # 리소스 경로 수정
-RESOURCE_PATH = "C:\\2DGP_proj\\project_01\\resource\\"
+#RESOURCE_PATH = "C:\\2DGP_proj\\project_01\\resource\\"
 
 PIXEL_PER_METER = (1000 / 18)
 RUN_SPEED_KMPH = 8.0
@@ -20,14 +20,14 @@ FRAMES_PER_ACTION = 7
 class MonsterBall:
     def __init__(self, start_x):
         # 리소스 경로에 맞춰 수정
-        self.image = load_image(RESOURCE_PATH + 'monster_ball.png')
+        self.image = load_image('resource\\monster_ball.png')
         self.x, self.y = start_x, 580
         self.frame = 0
         self.speed_x, self.speed_y = 0, -1
         self.hit_x = None
         self.game = 0
         # 리소스 경로에 맞춰 수정
-        self.crashing_sound = load_wav(RESOURCE_PATH + 'WAVE146_1.wav')
+        self.crashing_sound = load_wav('resource\\WAVE146_1.wav')
         self.crashing_sound.set_volume(35)
 
     def reset_position(self, winner_x):

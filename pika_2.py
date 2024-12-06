@@ -2,7 +2,7 @@ from pico2d import *
 import game_framework
 
 # 리소스 경로 상수
-RESOURCE_PATH = "C:\\2DGP_proj\\project_01\\resource\\"
+#RESOURCE_PATH = "C:\\2DGP_proj\\project_01\\resource\\"
 
 # 이벤트 처리 함수들
 def right_down(e):
@@ -279,7 +279,7 @@ class StateMachine:
 class Pika2:
     def __init__(self):
         self.x, self.y = 1000 - 200, 150
-        self.image = load_image(RESOURCE_PATH + 'pikachu.png')
+        self.image = load_image('resource\\pikachu.png')
         self.frame = 0
         self.speed_y = 0
         self.speed = 0
@@ -287,11 +287,11 @@ class Pika2:
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.move = 0
-        self.jump_sound = load_wav(RESOURCE_PATH + 'WAVE141_1.wav')
+        self.jump_sound = load_wav('resource\\WAVE141_1.wav')
         self.jump_sound.set_volume(30)
-        self.landing_sound = load_wav(RESOURCE_PATH + 'WAVE142_1.wav')
+        self.landing_sound = load_wav('resource\\WAVE142_1.wav')
         self.landing_sound.set_volume(30)
-        self.pikachu_sound = load_wav(RESOURCE_PATH + 'WAVE144_1.wav')
+        self.pikachu_sound = load_wav('resource\\WAVE144_1.wav')
         self.pikachu_sound.set_volume(30)
 
     def update(self):

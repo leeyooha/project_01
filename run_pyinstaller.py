@@ -15,7 +15,6 @@ def get_module_installation_path(module_name):
     return None
 
 
-
 print(' py to exe with PyInstaller '.center(80, '='))
 
 settings_file = 'pyinstaller_settings.toml'

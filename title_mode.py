@@ -4,7 +4,7 @@ import game_framework
 import game_start
 
 # 리소스 경로 상수
-RESOURCE_PATH = "C:\\2DGP_proj\\project_01\\resource\\"
+#RESOURCE_PATH = "C:\\2DGP_proj\\project_01\\resource\\"
 
 
 def handle_events():
@@ -25,9 +25,9 @@ def init():
     global title_image, continue_image, wav
 
     # 리소스 로드
-    title_image = load_image(RESOURCE_PATH + 'title.png')
-    continue_image = load_image(RESOURCE_PATH + 'continue.png')
-    wav = load_wav(RESOURCE_PATH + 'WAVE144_1.wav')
+    title_image = load_image('resource\\title.png')
+    continue_image = load_image('resource\\continue.png')
+    wav = load_wav('resource\\WAVE144_1.wav')
     wav.set_volume(32)
 
 

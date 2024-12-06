@@ -14,7 +14,7 @@ from pika_1 import Pika1
 from pika_2 import Pika2
 from pikachu_map_obj import *
 
-RESOURCE_PATH = "C:\\2DGP_proj\\project_01\\resource\\"
+#RESOURCE_PATH = "C:\\2DGP_proj\\project_01\\resource\\"
 
 # 전역 변수
 pika1 = None
