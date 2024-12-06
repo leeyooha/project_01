@@ -39,7 +39,7 @@ def l_down(e):
 
 # 피카츄의 이동과 동작에 필요한 값들
 PIXEL_PER_METER = (1000 / 18)
-RUN_SPEED_KMPH = 12.0
+RUN_SPEED_KMPH = 16.0
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
@@ -53,7 +53,7 @@ class Jump:
     @staticmethod
     def enter(pikachu_2, e):
         if up_down(e):
-            pikachu_2.speed_y = 4
+            pikachu_2.speed_y = 6
             pikachu_2.jump_sound.play()
         pikachu_2.action = 2
 

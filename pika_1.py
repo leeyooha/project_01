@@ -39,7 +39,7 @@ def g_down(e):
 
 
 PIXEL_PER_METER = (1000 / 18)
-RUN_SPEED_KMPH = 12.0
+RUN_SPEED_KMPH = 16.0
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
@@ -54,7 +54,7 @@ class Jump:
     def enter(pikachu, e):
         if up_down(e):
             pikachu.jump_sound.play()
-            pikachu.speed_y = 4
+            pikachu.speed_y = 6
         pikachu.action = 2
 
         pass

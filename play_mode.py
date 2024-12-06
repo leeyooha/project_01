@@ -91,29 +91,31 @@ def update():
 def handle_score_update():
     global game_monster_ball, pika1, pika2
 
-    # 득점 판별
-    if game_monster_ball.x <= 500:  # 공이 왼쪽 바닥(1P 영역)에 닿았을 때
-        server.score_2.count += 1  # 2P 득점
-        server.winner = '2p'
-        loser_x, loser_y = pika1.x, pika1.y  # 패자는 1P
-    else:  # 공이 오른쪽 바닥(2P 영역)에 닿았을 때
-        server.score_1.count += 1  # 1P 득점
-        server.winner = '1p'
-        loser_x, loser_y = pika2.x, pika2.y  # 패자는 2P
+    # 공의 위치를 기반으로 득점 판별
+    if game_monster_ball.x <= 500:  # 공이 왼쪽 영역(1P) 바닥에 닿았을 때
+        server.score_2.count += 1  # 2P가 득점
+        server.winner = '2p'  # 승자는 2P
+        loser = pika1  # 패자는 1P
+    else:  # 공이 오른쪽 영역(2P) 바닥에 닿았을 때
+        server.score_1.count += 1  # 1P가 득점
+        server.winner = '1p'  # 승자는 1P
+        loser = pika2  # 패자는 2P
 
-    # 공 위치를 패자 머리 위로 배치
-    game_monster_ball.x = loser_x  # 패자의 x 위치
-    game_monster_ball.y = loser_y + 100  # 패자 머리 위에 배치
-    game_monster_ball.speed_x = 0  # 수평 이동 없음
-    game_monster_ball.speed_y = -5  # 아래로 떨어지는 속도
+    # 패배자의 머리 위로 공 배치
+    game_monster_ball.x = loser.x  # 패배자의 x 위치
+    game_monster_ball.y = loser.y + 50  # 패배자의 머리 위로 배치
+    game_monster_ball.speed_x = 0  # 수평 이동 속도 제거
+    game_monster_ball.speed_y = -10  # 아래로 떨어지는 속도 설정
+
+    print(f"Ball repositioned above loser ({'1P' if loser == pika1 else '2P'}) at ({game_monster_ball.x}, {game_monster_ball.y})")
 
     # 점수 조건 확인
     if server.score_1.count >= 10 or server.score_2.count >= 10:
         print("Game Over Triggered")
-        game_framework.stack.change_mode(game_over)  # 게임 종료
+        game_framework.stack.change_mode(game_over)  # 게임 종료 화면으로 전환
     else:
         print("Resetting Game Start")
-        game_framework.stack.change_mode(game_start)  # 게임 초기화
+        game_framework.stack.change_mode(game_start)  # 다음 라운드 시작
 
 
 def draw():
